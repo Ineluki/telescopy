@@ -115,6 +115,8 @@ function Project(options) {
 
 	//init own mime container since it's very important for file naming
 	this.mime = new MIME.Mime();
+	this.mime.define(require('mime/types.json'));
+	this.mime.default_type = this.mime.lookup('bin');
 	this.mime.define({
 		'text/xml' : ['xml']
 	});
