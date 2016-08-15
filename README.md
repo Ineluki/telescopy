@@ -59,9 +59,6 @@ For a more complete example see bin/run.js
 
 ### Options
 
-```javascript
-options.local = './mirror/'; //
-```
 | key | type | description |
 | --- | --- | --- |
 | local | string, mandatory | The local path to save to. Will be created if not existing |

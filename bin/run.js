@@ -6,9 +6,9 @@ const FS = require("fs");
  * takes a json as arg and runs it as project settings
  */
 
- const jsonFile = process.argv[ process.argv.length - 1 ];
- const json = FS.readFileSync( jsonFile );
- const options = JSON.parse( json );
+const jsonFile = process.argv[ process.argv.length - 1 ];
+const json = FS.readFileSync( jsonFile );
+const options = JSON.parse( json );
 
 var project;
 var checker;

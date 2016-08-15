@@ -85,13 +85,13 @@ methods.createSymlink = function(from, to) {
 						cb(null,false);
 					} else {
 						FS.unlink( from, function(err){
-							cb(err,true);
+							cb(err,false);
 						});
 					}
 				} else {
 					if (oldTarget !== path) {
 						FS.unlink( from, function(err){
-							cb(err,true);
+							cb(err,false);
 						});
 					} else {
 						cb(null,true);
