@@ -16,7 +16,7 @@ const buildFilter = function( filter ) {
     if (filter === false) return filterFalse;
 
     if (!filter.type || filterTypes.indexOf(filter.type) === -1) {
-        throw new Error("invalid filter type: "+JSON.stringify(filter.type));
+        throw new Error("invalid filter.type: "+JSON.stringify(filter.type));
     }
     if (filter.type === 'query' && typeof filter.key !== 'string') {
         throw new Error("filter.key must be a string, is "+(typeof filter.key));
@@ -56,9 +56,11 @@ const buildFilter = function( filter ) {
         }
     }
     if (typeof filter.match !== 'undefined') {
-        fnBody += `if(testResult===true) return ${filter.match};\n`;
+		let res = typeof filter.match === 'boolean' ? filter.match : '"'+filter.match+'"';
+        fnBody += `if(testResult===true) return ${res};\n`;
     } else {
-        fnBody += `if(testResult===false) return ${filter.nomatch};\n`;
+		let res = typeof filter.nomatch === 'boolean' ? filter.nomatch : '"'+filter.nomatch+'"';
+        fnBody += `if(testResult===false) return ${res};\n`;
     }
     fnBody += 'return null;';
     debug("BuiltFunction\n"+fnBody+"\n");

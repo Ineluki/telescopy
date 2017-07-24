@@ -300,6 +300,8 @@ Resource.prototype.processResourceLink = function (url, type) {
 	let absolute = Util.normalizeUrl( this.makeUrlAbsolute( url ), this.project.aggressiveUrlSanitation );
 	if (this.project.getUrlObj( absolute ).getAllowed()) {	//link to local or remote
 		let localFile = this.getLocalPath();
+		let ruleBasedMime = this.project.runMimeRules( URL.parse( absolute, false, false ) );
+		if (typeof ruleBasedMime === 'string') type = ruleBasedMime;
 		let linkFile = this.calculateLocalPathFromUrl( absolute, type );
 		let localUrl = this.calculateLocalUrl( linkFile, localFile );
 		if (this.project.skipFile( linkFile ) === false) {	//queue or skip
@@ -370,6 +372,9 @@ Resource.prototype.calculateLocalPathFromUrl = function ( url, mime ) {
 		}
 	}
 	let ext = mime ? this.project.mime.extension( mime ) : Path.extname(url).substr(1);
+	if (!ext) {
+		debug("WARNING: unknown mime: "+mime+", falling back to html");
+	}
 	let ending = "." + (ext ? ext : 'html');
 	let path = parsedUrl.pathname && parsedUrl.pathname.length > 1
 				? parsedUrl.pathname : '/';

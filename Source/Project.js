@@ -116,12 +116,17 @@ function Project(options) {
 	//init own mime container since it's very important for file naming
 	this.mime = new MIME.Mime();
 	this.mime.define(require('mime/types.json'));
-	this.mime.default_type = this.mime.lookup('bin');
+	this.mime.default_type = this.mime.lookup('bin');	//maybe make this html?
 	this.mime.define({
-		'text/xml' : ['xml']
+		'text/xml' : ['xml'],
+		"text/html":["html","htm","php","php5","php3","php7","asp"]
 	});
 	if (options.mimeDefinitions) {
 		this.mime.define( options.mimeDefinitions );
+	}
+	//mime custom rules
+	if (options.mimeRules) {
+		this.mimeRules = new Filter( options.mimeRules );
 	}
 
 	//internal id
@@ -318,7 +323,7 @@ Project.prototype.addResourceUrls = function(set) {
 		let url = entry[0];
 		let urlObj = ths.getUrlObj( url );
 		if (urlObj.getIsNew() === false) return;
-		debug("adding url",url);
+		debug("adding url",url,entry[2]);
 		let res = ths.getResourceByUrl(url);
 		res.expectedMime = entry[2];
 		res.expectedLocalPath = entry[1];
@@ -462,6 +467,11 @@ Project.prototype.getWaitTime = function () {
 		return this.baseWaitTime;
 	}
 	return this.baseWaitTime + Math.random() * this.randWaitTime;
+};
+
+Project.prototype.runMimeRules = function (url) {
+	if (!this.mimeRules) return false;
+	return this.mimeRules.run( url );
 };
 
 /**
