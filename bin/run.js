@@ -3,7 +3,7 @@ const Telescopy = require("../index.js");
 const FS = require("fs");
 
 /*
- * takes a json as arg and runs it as project settings
+ * takes a json file as last argument and runs it as project settings
  */
 
 const jsonFile = process.argv[ process.argv.length - 1 ];
