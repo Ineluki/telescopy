@@ -4,7 +4,7 @@ const MIME = require("mime");
 
 MIME.define({
 	'text/xml' : ['xml']
-});
+},true);
 
 const tests = [
 	[ 'text/html', null, null ],
@@ -17,5 +17,5 @@ const tests = [
 tests.forEach(function(test){
 	console.log(test);
 	let res = Util.guessMime.apply( null, test );
-	console.log(" ==> ",res," -> ", MIME.extension(res));
+	console.log(" ==> ",res," -> ", MIME.getExtension(res));
 });

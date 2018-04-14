@@ -8,7 +8,9 @@ var mirror = Path.normalize(__dirname+"/../Data/Mirror1");
 var server = new StaticServer({
 	rootPath : mirror,
 	port : 8080,
-	index : 'index.html',
+	templates: {
+		index : 'index.html'
+	},
 	followSymlink: true
 });
 server.start();

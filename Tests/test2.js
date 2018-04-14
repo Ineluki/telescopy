@@ -21,7 +21,9 @@ var prepare = function(remote,next) {
 		rootPath : remote,
 		port : 8080,
 		followSymlink : true,
-		index : 'index.html'
+		templates: {
+			index : 'index.html'
+		}
 	});
 	server.start(next);
 };

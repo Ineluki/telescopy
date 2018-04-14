@@ -16,7 +16,7 @@ const UpdateCss = require("./UpdateCss");
 const TransformerHtml = require("./TransformHtml");
 const TransformerCss = require("./TransformCss");
 const Stream = require("stream");
-const MIME = require("mime");
+const MIME = require("mime/Mime");
 const ProjectState = require("./ProjectState");
 const mkdirp = require("mkdirp");
 const Events = require("events");
@@ -114,15 +114,14 @@ function Project(options) {
 	}
 
 	//init own mime container since it's very important for file naming
-	this.mime = new MIME.Mime();
-	this.mime.define(require('mime/types.json'));
-	this.mime.default_type = this.mime.lookup('bin');	//maybe make this html?
+	this.mime = new MIME(require('mime/types/standard.json'),require('mime/types/other.json'));
+	this.defaultMimeType = 'bin';	//@TODO able to change via config
 	this.mime.define({
 		'text/xml' : ['xml'],
 		"text/html":["html","htm","php","php5","php3","php7","asp"]
-	});
+	},true);
 	if (options.mimeDefinitions) {
-		this.mime.define( options.mimeDefinitions );
+		this.mime.define( options.mimeDefinitions, true );
 	}
 	//mime custom rules
 	if (options.mimeRules) {
@@ -419,7 +418,7 @@ Project.prototype.skipFile = function(filePath) {
 	if (!this.skipExistingFiles) return false;
 	if (this.skipExistingFilesExclusion) {
 		let fileExt = Path.extname( filePath );
-		let mime = this.mime.lookup( fileExt );
+		let mime = this.mime.getType( fileExt );
 		if (this.skipExistingFilesExclusion[mime]) return false;
 	}
 	try {
@@ -472,6 +471,19 @@ Project.prototype.getWaitTime = function () {
 Project.prototype.runMimeRules = function (url) {
 	if (!this.mimeRules) return false;
 	return this.mimeRules.run( url );
+};
+
+Project.prototype.lookupMime = function (url, fallback) {
+	let type;
+	type = this.runMimeRules(url);
+	if (!type) {
+		type = this.mime.getType(url);
+	}
+	if (!type) {
+		if (fallback) type = fallback;
+		else type = this.mime.getType(this.defaultMimeType);
+	}
+	return type;
 };
 
 /**

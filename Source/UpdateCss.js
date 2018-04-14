@@ -2,11 +2,11 @@
 const methods = {};
 
 methods.updateUrl = function ( url ) {
-	let mime = this.project.mime.lookup( url, 'image/png' );
+	let mime = this.project.lookupMime( url, 'image/png' );
 	return this.processResourceLink( url, mime );
 };
 methods.updateImport = function ( url ) {
-	let mime = this.project.mime.lookup( url, 'text/css' );
+	let mime = this.project.lookupMime( url, 'text/css' );
 	return this.processResourceLink( url, mime );
 };
 

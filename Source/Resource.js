@@ -323,7 +323,7 @@ Resource.prototype.processResourceLink = function (url, type) {
  **/
 Resource.prototype.guessMime = function () {
 	if (this.expectedMime) return this.expectedMime;
-	let fromUrl = this.project.mime.lookup( this.linkedUrl );
+	let fromUrl = this.project.lookupMime( this.linkedUrl );
 	let fromHeader = this.remoteHeaders ? this.remoteHeaders['content-type'] : null;
 	if (fromHeader) {
 		let cpos = fromHeader.indexOf(";");
@@ -374,7 +374,7 @@ Resource.prototype.calculateLocalPathFromUrl = function ( url, mime ) {
 			queryString = Crypto.createHash('sha512').update(queryString).digest("base64");
 		}
 	}
-	let ext = mime ? this.project.mime.extension( mime ) : Path.extname(url).substr(1);
+	let ext = mime ? this.project.mime.getExtension( mime ) : Path.extname(url).substr(1);
 	if (!ext) {
 		debug("WARNING: unknown mime: "+mime+", falling back to html");
 	}

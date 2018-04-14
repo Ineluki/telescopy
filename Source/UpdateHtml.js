@@ -17,7 +17,7 @@ methods.updateAttributes = function (args) {
 		case 'a':
 		case 'area':
 			if (attributes.href) {
-				attributes.href = this.processResourceLink( attributes.href, this.project.mime.lookup(attributes.href, 'text/html') );
+				attributes.href = this.processResourceLink( attributes.href, this.project.lookupMime(attributes.href, 'text/html') );
 			}
 		break;
 
@@ -34,7 +34,7 @@ methods.updateAttributes = function (args) {
 
 		case 'img':
 			if (attributes.src) {
-				attributes.src = this.processResourceLink( attributes.src, this.project.mime.lookup(attributes.src, 'image/jpeg') );
+				attributes.src = this.processResourceLink( attributes.src, this.project.lookupMime(attributes.src, 'image/jpeg') );
 			}
 		break;
 
@@ -94,7 +94,7 @@ methods.updateStyles = function(text) {
 	var ths = this;
 	return TransformCss.replaceUrls( text, function( hook, url ){
 		let defMime = hook === 'url' ? 'image/png' : 'text/css';
-		let mime = MIME.lookup( url, defMime );
+		let mime = MIME.getType( url, defMime );
 		return Promise.resolve( ths.processResourceLink( url, mime ) );
 	});
 };

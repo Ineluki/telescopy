@@ -16,7 +16,9 @@ var prepare = function() {
 	server = new StaticServer({
 		rootPath : remote,
 		port : 8080,
-		index : 'index.html'
+		templates: {
+			index : 'index.html'
+		}
 	});
 	server.start(runTest);
 };

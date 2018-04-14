@@ -9,7 +9,6 @@ var project = new Telescopy({
 	remote : 'http://xmh57jrzrnw6insl.onion/',
 	local : mirror,
 	cleanLocal : true,
-	tempDir : mirror+"/temp/",
 	proxy : "socks5://192.168.1.27:9005"
 });
 project.on("finishresource",function(err,res){
