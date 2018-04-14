@@ -1,0 +1,73 @@
+# TelesCOPY Docs
+
+Module for mirroring websites. Since using wget is awful to use from other programs. This addresses the following issues:
+
+* designed to integrate well into other node apps
+* can also run well from the CLI
+* perfect filtering options
+* able to cancel and still use what has been downloaded so far (local file names are deterministic)
+* allows for re-download of single resources
+
+Some other features:
+
+* fast (all streaming), but only one thread
+* low memory overhead
+* keeps stats of allowed and denied URIs and how often they appeared
+* keeps track of downloaded bits and bps
+* socks5 proxy support
+* cli tool for testing filters
+
+It is **not** a JS-aware scraper that uses phantomjs or similar tech.
+
+## Documentation
+
+ * [Configuration](config.md)
+ * [Filters](filters.md)
+ * [Integration - API and Events](integration.md)
+ * [Debugging](debugging.md)
+ * [Planned Development](todo.md)
+
+## Quickstart
+
+### Config
+
+First setup a config file for your website project. It can be in .json or CommonJS require-able .js
+
+```json
+{
+	"remote": "https://choosealicense.com/",
+	"local" : "./Data/choosealicense.com"
+}
+```
+
+### CLI
+
+Depending on where you saved your config, start the project like this:
+
+```sh
+node bin/run.sh config.json
+```
+
+It will keep you up-to-date while it runs and exit the process once no more resources need to be downloaded.
+
+### Integration
+
+Telescopy is written to integrate well into bigger projects. For a more complete example check out the bin/run.js and the full documentation.
+
+```js
+const Telescopy = require("telescopy");
+let project = new Telescopy({
+	"remote": "https://choosealicense.com/",
+	"local" : "./Data/choosealicense.com"
+});
+project.on("error",err => {
+	//something unexpected happend
+});
+project.on("end",finished => {
+	if (finished) //project complete
+	//otherwise just paused
+});
+project.start();
+```
+
+
