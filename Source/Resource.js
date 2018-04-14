@@ -297,7 +297,7 @@ Resource.prototype.overrideFromTmpFile = function(){
  **/
 Resource.prototype.processResourceLink = function (url, type) {
 	debug("processResourceLink",url,type);
-	if (url.substr(0,5) === 'data:') {
+	if (url.substr(0,5) === 'data:' || url.substr(0,6) === 'mailto:' || url.substr(0,11) === 'javascript:') {
 		return url;
 	}
 	let absolute = Util.normalizeUrl( this.makeUrlAbsolute( url ), this.project.aggressiveUrlSanitation );

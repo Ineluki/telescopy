@@ -1,34 +1,13 @@
 "use strict";
 const Telescopy = require("../index.js");
-const FS = require("fs");
-const Path = require("path");
+const util = require("../Source/cli/util.js");
 
 /*
  * takes a json file as last argument and runs it as project settings
  */
 
 let fileName = process.argv[ process.argv.length - 1 ];
-const ext = Path.extname(fileName);
-let options;
-switch (ext) {
-	case '.js':
-		//make relative paths absolute for require
-		if (['.','/'].indexOf(fileName.substr(0,1)) === -1) {
-			fileName = Path.join(process.cwd(),fileName);
-		}
-		options = require(fileName);
-	break;
-
-	case '.json':
-		options = JSON.parse( FS.readFileSync( fileName ) );
-	break;
-
-	default:
-		throw new Error("invalid options file given, must be .js or .json");
-}
-if (!(options instanceof Object)) {
-	throw new Error("did not get options-object from "+fileName);
-}
+const options = util.loadOptions(fileName);
 
 var project;
 var checker;
