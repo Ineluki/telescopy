@@ -36,7 +36,7 @@ function ProjectState( project, urlFilter ) {
  * @param {string} url
  * @return {PROJECT_URL} obj
  **/
-ProjectState.prototype.getUrlObj = function ( url ) {
+ProjectState.prototype.getUrlObj = function ( url, duplicate ) {
 	if (!this.urls.has(url)) {
 		let obj;
 		if (!obj) {
@@ -44,7 +44,7 @@ ProjectState.prototype.getUrlObj = function ( url ) {
 			obj = new ProjectUrl( this );
 			let parsed = URL.parse( url, true, false );
 			let allowed = this.urlFilter( parsed );
-			obj.setUrl( url, allowed );
+			obj.setUrl( url, allowed, duplicate );
 		}
 		this.urls.set( url, obj );
 	} else {

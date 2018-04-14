@@ -13,6 +13,7 @@ function ProjectUrl( projectState ) {
 	this.skipped = false;
 	this.downloaded = false;
 	this.queued = false;
+	this.duplicate = false;
 	this.projectState = projectState;
 	this.url = '';
 }
@@ -22,13 +23,16 @@ function ProjectUrl( projectState ) {
  * @param {string} url
  * @param {boolean} allowed
  **/
-ProjectUrl.prototype.setUrl = function ( url, allowed ) {
+ProjectUrl.prototype.setUrl = function ( url, allowed, duplicate ) {
 	this.url = url;
 	this.allowed = allowed;
-	if (allowed) {
-		this.projectState.allowed += 1;
-	} else {
-		this.projectState.denied += 1;
+	this.duplicate = duplicate;
+	if (!this.duplicate) {
+		if (allowed) {
+			this.projectState.allowed += 1;
+		} else {
+			this.projectState.denied += 1;
+		}
 	}
 };
 
@@ -48,8 +52,10 @@ ProjectUrl.prototype.setSkipped = function () {
 	if (this.queued === false) return;
 	this.queued = false;
 	this.skipped = true;
-	this.projectState.queued -= 1;
-	this.projectState.skipped += 1;
+	if (!this.duplicate) {
+		this.projectState.queued -= 1;
+		this.projectState.skipped += 1;
+	}
 };
 
 /**
@@ -59,8 +65,10 @@ ProjectUrl.prototype.setDownloaded = function () {
 	if (this.queued === false) return;
 	this.queued = false;
 	this.downloaded = true;
-	this.projectState.queued -= 1;
-	this.projectState.downloaded += 1;
+	if (!this.duplicate) {
+		this.projectState.queued -= 1;
+		this.projectState.downloaded += 1;
+	}
 };
 
 /**
@@ -69,7 +77,9 @@ ProjectUrl.prototype.setDownloaded = function () {
 ProjectUrl.prototype.setQueued = function () {
 	if (this.queued === true || this.skipped === true || this.downloaded === true) return;
 	this.queued = true;
-	this.projectState.queued += 1;
+	if (!this.duplicate) {
+		this.projectState.queued += 1;
+	}
 };
 
 /**

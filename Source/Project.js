@@ -436,8 +436,8 @@ Project.prototype.skipFile = function(filePath) {
  * @param {string} url
  * @return {PROJECT_URL}
  **/
-Project.prototype.getUrlObj = function (url) {
-	return this.state.getUrlObj( url );
+Project.prototype.getUrlObj = function (url,duplicate) {
+	return this.state.getUrlObj( url, !!duplicate );
 };
 
 /**

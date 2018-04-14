@@ -89,7 +89,7 @@ Resource.prototype.setCanonicalUrl = function( url ){
  * @param {string} url
  **/
 Resource.prototype.addUrlToProject = function( url ){
-	this.project.getUrlObj(url).queued = true;	//use setter to avoid aggregate increase since its the same resource
+	this.project.getUrlObj(url,true).setQueued();
 };
 
 /**
