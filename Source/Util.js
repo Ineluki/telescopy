@@ -25,21 +25,29 @@ methods.guessMime = function( fromHeader, fromUrl ) {
 /**
  * url normalization procedure
  * @param {string} url
- * @param {boolean} aggressive
  * @return {string} url
  **/
-methods.normalizeUrl = function( url, aggressive ) {
+methods.normalizeUrl = function( url ) {
 	var parts;
 	if (typeof url.length !== 'undefined') {
 		parts = URL.parse( url, false, false );
 	} else {
 		parts = url;
 	}
-	if (aggressive) {
-		parts.pathname = parts.pathname.replace(/([^ -~])|(%[0-9a-z]{2})/ig,'');
-	}
+	//old aggressive option
+	//parts.pathname = parts.pathname.replace(/([^ -~])|(%[0-9a-z]{2})/ig,'');
 	if (parts.hash) parts.hash = '';
 	return URL.format( parts );
+};
+
+/**
+ * @param {int} statusCode
+ * @param {object} headers
+ * @param {string} url
+ * @return {bool} continue or abort
+ **/
+methods.decideOnHeaders = function(statusCode,headers,url) {
+	return statusCode < 400;
 };
 
 /**

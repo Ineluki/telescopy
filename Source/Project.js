@@ -21,6 +21,7 @@ const ProjectState = require("./ProjectState");
 const mkdirp = require("mkdirp");
 const Events = require("events");
 const util = require("util");
+const ProjectUtil = require("./Util");
 const Socks5HttpAgent = require('socks5-http-client/lib/Agent');
 const Socks5HttpsAgent = require('socks5-https-client/lib/Agent');
 
@@ -53,11 +54,11 @@ function Project(options) {
 	//timeout to full download completion
 	this.timeoutToDownload = options.timeoutToDownload || 12000;
 	//create symlinks for http redirects
-	this.linkRedirects = options.linkRedirects || false;
+	this.linkRedirects = options.linkRedirects || true;
 	//expected index filename, e.g. is url ends with /
 	this.defaultIndex = options.defaultIndex || 'index';
 	//default useragent
-	this.userAgent = options.userAgent || 'Mozilla/5.0 (Windows NT 6.1; WOW64; rv:40.0) Gecko/20100101 Firefox/40.1';
+	this.userAgent = options.userAgent || 'Telescopy website mirror';
 	//socks proxy url:port
 	this.proxy = options.proxy || null;
 
@@ -74,8 +75,6 @@ function Project(options) {
 	//wait time between resources: base + random
 	this.baseWaitTime = options.baseWaitTime || 0;
 	this.randWaitTime = options.randWaitTime || 0;
-	//more aggressive url path sanitation
-	this.aggressiveUrlSanitation = options.aggressiveUrlSanitation || false;
 
 	//filter settings
 	let filterByUrl;
@@ -127,6 +126,10 @@ function Project(options) {
 	if (options.mimeRules) {
 		this.mimeRules = new Filter( options.mimeRules );
 	}
+	//url sanitation
+	this.normalizeUrl = options.normalizeUrl || ProjectUtil.normalizeUrl;
+	//header decision
+	this.decideOnHeaders = options.decideOnHeaders || ProjectUtil.decideOnHeaders;
 
 	//internal id
 	this.id = '';
@@ -155,10 +158,11 @@ Project.prototype.fetch = function( url, referer ) {
 		agentHttp : this.httpAgent,
 		agentHttps : this.httpsAgent,
 		encoding : '',
-		headers : {
-			Referer : referer
-		}
+		headers : {}
 	};
+	if (referer) {
+		options.headers.referer = referer;
+	}
 	let stream = new Fetch.FetchStream( url, options );
 	stream.setMaxListeners(12);	//for redirects
 	stream.pause();	//must pause until pipes are established

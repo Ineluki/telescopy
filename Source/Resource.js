@@ -133,11 +133,10 @@ Resource.prototype.process = function () {
 					ths.redirectUrl = meta.finalUrl;
 					ths.setRedirectUrl( meta.finalUrl );
 				}
-				if (meta.status >= 400) {
-					debug("WARN "+meta.status);
-					reject(meta);
-				} else {
+				if (ths.project.decideOnHeaders(meta.status,meta,ths.linkedUrl)) {
 					resolve(fetchStream);
+				} else {
+					reject(meta);
 				}
 				clearTimeout( timer );
 			});
@@ -297,10 +296,10 @@ Resource.prototype.overrideFromTmpFile = function(){
  **/
 Resource.prototype.processResourceLink = function (url, type) {
 	debug("processResourceLink",url,type);
-	if (url.substr(0,5) === 'data:' || url.substr(0,6) === 'mailto:' || url.substr(0,11) === 'javascript:') {
+	if (url.substr(0,5) === 'data:' || url.substr(0,7) === 'mailto:' || url.substr(0,11) === 'javascript:') {
 		return url;
 	}
-	let absolute = Util.normalizeUrl( this.makeUrlAbsolute( url ), this.project.aggressiveUrlSanitation );
+	let absolute = this.project.normalizeUrl( this.makeUrlAbsolute( url ) );
 	if (this.project.getUrlObj( absolute ).getAllowed()) {	//link to local or remote
 		let localFile = this.getLocalPath();
 		let ruleBasedMime = this.project.runMimeRules( URL.parse( absolute, false, false ) );
