@@ -185,5 +185,3 @@ This helps in improving the filter settings.
  * custom handling of http status codes via config
  * use etags to limit bandwidth usage
  * redirect handling via meta html tag
- * link to image is currently treated fixed as expected html?
-
