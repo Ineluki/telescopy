@@ -37,21 +37,32 @@ function ProjectState( project, urlFilter ) {
  * @return {PROJECT_URL} obj
  **/
 ProjectState.prototype.getUrlObj = function ( url, duplicate ) {
-	if (!this.urls.has(url)) {
-		let obj;
-		if (!obj) {
-			debug("create url obj: "+url);
-			obj = new ProjectUrl( this );
-			let parsed = URL.parse( url, true, false );
-			let allowed = this.urlFilter( parsed );
-			obj.setUrl( url, allowed, duplicate );
-		}
-		this.urls.set( url, obj );
+	let parsed = URL.parse( url, true, false );
+	let normalized = this.getNormalizedUrl(parsed);
+	if (!this.urls.has(normalized)) {
+		debug("create url obj: "+normalized);
+		let obj = new ProjectUrl( this );
+		let allowed = this.urlFilter( parsed );
+		obj.setUrl( url, allowed, duplicate );
+		this.urls.set( normalized, obj );
+		return obj;
 	} else {
-		debug("readCached",url);
+		return this.urls.get( normalized );
 	}
-	let obj = this.urls.get( url );
-	return obj;
+};
+
+/**
+ * removes protocol and hash
+ * must be in tune with the local file storage
+ * @see Resource.prototype.calculateLocalPathFromUrl()
+ * @param {object} parsed
+ * @return {string} url
+ **/
+ProjectState.prototype.getNormalizedUrl = function (parsed) {
+	let copy = JSON.parse(JSON.stringify(parsed));
+	copy.protocol = '';
+	copy.hash = '';
+	return URL.format(copy);
 };
 
 /**
@@ -79,12 +90,12 @@ ProjectState.prototype.getUrlStats = function(){
 ProjectState.prototype.getUrlFilterAnalysis = function(){
 	var allowedUrls = [];
 	var deniedUrls = [];
-	this.urls.forEach(function(obj,url){
+	this.urls.forEach(function(obj){
 		if (obj.asked === 0) return;
 		if (obj.allowed) {
-			allowedUrls.push([url,obj.asked]);
+			allowedUrls.push([obj.url,obj.asked]);
 		} else {
-			deniedUrls.push([url,obj.asked]);
+			deniedUrls.push([obj.url,obj.asked]);
 		}
 	});
 	var sort = function(a,b){
