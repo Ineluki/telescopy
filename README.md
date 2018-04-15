@@ -1,6 +1,6 @@
-# telesCOPY
+# TelesCOPY
 
-A website mirroring package. Because mirroring websites should be as easy as
+Because mirroring websites should be as easy as
 
 ```js
 new Telescopy({
@@ -9,7 +9,8 @@ new Telescopy({
 });
 ```
 
-and still be powerful enough to cover all edge-cases.
-The default configuration is enough for one-time mirroring and does not download anything not on the target domain.
+and still powerful enough to cover all edge-cases.
 
-See [documentation](./docs/index.md) for in-depth configuration and examples.
+The default configuration is enough for one-time mirroring and restricts itself to the target domain.
+
+See the [documentation](./docs/index.md) for features, in-depth configuration and examples.

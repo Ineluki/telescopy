@@ -41,12 +41,25 @@ First setup a config file for your website project. It can be in .json or Common
 }
 ```
 
+When specifying functions, the CommonJS version is required:
+
+```js
+module.exports = {
+	remote: "https://choosealicense.com/",
+	local : "./Data/choosealicense.com",
+	filterByUrl: (parsedUrl) => {
+		//your filter logic
+		return allowed;
+	}
+}
+```
+
 ### CLI
 
-Depending on where you saved your config, start the project like this:
+Depending on where you saved your config, run the project like this:
 
 ```sh
-node bin/run.sh config.json
+node bin/run.sh Data/config.js
 ```
 
 It will keep you up-to-date while it runs and exit the process once no more resources need to be downloaded.
@@ -73,4 +86,4 @@ project.start();
 
 ### More examples
 
-For more examples see the Tests/ directory. For more in-depth examples of urlFiltering (the main part of the configuration), see [Filters](./filter.md).
+For more examples see the Tests-directory. For more in-depth examples of urlFiltering (the main part of the configuration), see [Filters](./filter.md).
