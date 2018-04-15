@@ -10,8 +10,7 @@ const Path = require("path");
 
 var remoteA = Path.normalize(__dirname+"/Fixtures/Remote2a");
 var remoteB = Path.normalize(__dirname+"/Fixtures/Remote2b");
-var mirror = Path.normalize(__dirname+"/../Data/Mirror2");
-var temp = Path.normalize(__dirname+"/../Data/Temp");
+var mirror = Path.normalize(__dirname+"/../Data/Mirror-test");
 
 var server;
 var project;
@@ -33,8 +32,7 @@ var stage1 = function(){
 	project = new Telescopy({
 		remote : 'http://localhost:8080/',
 		local : mirror,
-		cleanLocal : true,
-		tempDir : temp
+		cleanLocal : true
 	});
 	project.on("end",cleanup1);
 	project.start();
@@ -46,7 +44,6 @@ var stage2 = function(){
 		remote : 'http://localhost:8080/',
 		local : mirror,
 		cleanLocal : false,
-		tempDir : temp,
 		skipExistingFiles : true,
 		skipExistingFilesExclusion : {
 			'text/html' : true

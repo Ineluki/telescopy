@@ -3,84 +3,42 @@ const MIME = require("mime");
 const methods = {};
 const TransformCss = require("./TransformCss");
 
+
+
 methods.updateAttributes = function (args) {
 	let attributes = args.attributes;
+	let styleProm;
 
 	if ("style" in attributes) {
-		var styleProm = methods.updateStyles.call(this, attributes.style)
+		styleProm = methods.updateStyles.call(this, attributes.style)
 		.then(function(style){
 			args.attributes.style = style;
 		});
 	}
 
-	switch (args.tag) {
-		case 'a':
-		case 'area':
-			if (attributes.href) {
-				attributes.href = this.processResourceLink( attributes.href, this.project.lookupMime(attributes.href, 'text/html') );
+	for (let entry of this.project.tagCallbacks) {
+		if (args.tag !== entry.tag) continue;
+		if (entry.filter && !entry.filter(attributes)) continue;
+		if (entry.exec) {
+			entry.exec(attributes,args,this);
+			continue;
+		}
+		if (entry.target) {
+			let key, value, fbmime;
+			if (entry.target.call) key = entry.target(attributes,this);
+			else key = entry.target;
+			value = attributes[key];
+			if (entry.mime.call) {
+				fbmime = entry.mime(attributes,this);
+			} else {
+				fbmime = ""+entry.mime;
 			}
-		break;
+			let mime = this.project.lookupMime(value, fbmime);
+			attributes[key] = this.processResourceLink( value, mime );
+			continue;
+		}
+	};
 
-		case 'link':
-			if (attributes.rel.toLowerCase() === 'canonical' && attributes.href) {
-				let absolute = this.makeUrlAbsolute( attributes.href );
-				this.setCanonicalUrl( absolute );
-				args.delete = true;
-			}
-			if (attributes.rel.toLowerCase() === 'stylesheet' && attributes.href) {
-				attributes.href = this.processResourceLink( attributes.href, 'text/css' );
-			}
-		break;
-
-		case 'img':
-			if (attributes.src) {
-				attributes.src = this.processResourceLink( attributes.src, this.project.lookupMime(attributes.src, 'image/jpeg') );
-			}
-		break;
-
-		case 'script':
-			if (attributes.src) {
-				let type = attributes.type ? 'application/'+attributes.type : 'application/javascript';
-				attributes.src = this.processResourceLink( attributes.src, type );
-			}
-		break;
-
-		case 'base':
-			if (attributes.href) {
-				this.baseUrl = attributes.href;
-				args.delete = true;
-			}
-		break;
-
-		case 'form':
-			if (attributes.action) {
-				attributes.action = this.processResourceLink( attributes.action, 'text/html' );
-			}
-		break;
-
-		case 'button':
-			if (attributes.formaction) {
-				attributes.formaction = this.processResourceLink( attributes.formaction, 'text/html' );
-			}
-		break;
-
-		case 'meta':
-			if (attributes['http-equiv'].toLowerCase() === 'refresh' && attributes.content) {
-				let ths = this;
-				attributes.content.replace(/^(\d+);url=(.+)$/i,function(all,time,url){
-					url = ths.processResourceLink( url, 'text/html' );
-					return `${time};url=${url}`;
-				});
-			}
-		break;
-
-		case 'option':
-			if (attributes.value && attributes.value.match(/https?\:/)) {
-				attributes.value = this.processResourceLink( attributes.value, 'text/html' );
-			}
-		break;
-
-	}
 	if (styleProm) {
 		return styleProm.then(function(){
 			return args;

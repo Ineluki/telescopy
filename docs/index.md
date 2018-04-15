@@ -25,7 +25,7 @@ It is **not** a JS-aware scraper that uses phantomjs or similar tech.
  * [Filters](filters.md)
  * [Integration - API and Events](integration.md)
  * [Debugging](debugging.md)
- * [Planned Development](todo.md)
+ * [Development, known Limitations](todo.md)
 
 ## Quickstart
 
@@ -70,4 +70,6 @@ project.on("end",finished => {
 project.start();
 ```
 
+### More examples
 
+For more examples see the Tests/ directory. For more in-depth examples of urlFiltering (the main part of the configuration), see [Filters](./filter.md).

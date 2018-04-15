@@ -5,10 +5,10 @@ const StaticServer = require("static-server");
 const Path = require("path");
 
 /*
- * Tests basic functionality, html and css links
+ * Tests adding a new html attribute filter
  */
 
-var remote = Path.normalize(__dirname+"/Fixtures/Remote1");
+var remote = Path.normalize(__dirname+"/Fixtures/Remote9");
 var mirror = Path.normalize(__dirname+"/../Data/Mirror-test");
 var server;
 var prepare = function() {
@@ -36,7 +36,16 @@ var runTest = function(){
 	var project = new Telescopy({
 		remote : 'http://localhost:8080/',
 		local : mirror,
-		cleanLocal : true
+		cleanLocal : true,
+		htmlAttributeFilters: {
+			'img.datasrc': {
+				tag: 'img',
+				filter: a => a['data-src'] && a['data-src'].length,
+				target: 'data-src',
+				mime: 'image/jpeg'
+			}
+		}
+
 	});
 	project.on("finishresource",function(err,res){
 		console.log("Resource Finished", err ? err : '', res.getUrls(), res.bytes, res.bps);
@@ -50,9 +59,6 @@ var runTest = function(){
 		finish();
 	});
 	project.start();
-	setTimeout(function(){
-		project.addUrl('http://localhost:8080/contact3.html');
-	},100);
 };
 
 prepare();

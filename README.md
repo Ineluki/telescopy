@@ -1,6 +1,6 @@
 # telesCOPY
 
-A website mirroring package. See [documentation](./docs/index.md) for further details.
+A website mirroring package. See [documentation](./docs/index.md) for further details and examples.
 
 ## Index
 

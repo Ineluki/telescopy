@@ -24,6 +24,7 @@ const util = require("util");
 const ProjectUtil = require("./Util");
 const Socks5HttpAgent = require('socks5-http-client/lib/Agent');
 const Socks5HttpsAgent = require('socks5-https-client/lib/Agent');
+const HtmlAttributeFilters = require('./HtmlAttributeFilters');
 
 module.exports = Project;
 
@@ -130,6 +131,12 @@ function Project(options) {
 	this.normalizeUrl = options.normalizeUrl || ProjectUtil.normalizeUrl;
 	//header decision
 	this.decideOnHeaders = options.decideOnHeaders || ProjectUtil.decideOnHeaders;
+	//build htrml attribute filters
+	this.tagCallbacks = HtmlAttributeFilters.build(options.htmlAttributeFilters);
+
+
+
+
 
 	//internal id
 	this.id = '';
