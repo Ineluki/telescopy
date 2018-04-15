@@ -20,7 +20,7 @@ If true, existing files will not be checked again. If false, they will be downlo
 
 *object, optional*
 
-If set, it will be checked for mime-keys. If true, this file will not be skipped. Example to redownload existing html files even if they exist locally:
+If set, it will be checked for mime-keys. If true, this file will not be skipped. Useful to update a mirror without re-downloading media. Example to re-download html files even if they exist locally:
 
 ```js
 { "text/html" : true }
@@ -136,3 +136,9 @@ Can override url sanitation/normalization. The default function removes the #has
 
 Can override the decision if a download continues after the headers have been received. The default behavior is to return false if statusCode >= 400.
 Using this option enables making fine-grained decisions based on url and all headers.
+
+### htmlAttributeFilters
+
+*object, optional*
+
+Can enhance or override behavior on how html tags/attributes are handled. See [HTML Parsing](html.md) for full details.

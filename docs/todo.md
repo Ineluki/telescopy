@@ -4,8 +4,6 @@ List of possible future features
 
 ## High Prio
 
- * project state must exclude protocol in its index since that mirrors the local file storage, OR file storage must include protocol
- * make html attribute filters extensible
 
 ## Low Prio
 
@@ -25,4 +23,4 @@ List of possible future features
 Edge cases, might make problems in theory, unknown if will be fixed
 
  * if tags are modified before the base-tag is discovered, the resulting absolute urls can be wrong
- * data is saved independent of schema. if different content exists for http and https then it might get ignored.
+ * data is saved independent of schema. if different content exists for http and https then it will ignore one version

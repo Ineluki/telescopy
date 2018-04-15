@@ -15,8 +15,8 @@ const options = util.loadOptions(fileName);
 
 const statColors = {
 	allowed: Chalk.bgGreen.black,
-	denied: Chalk.bgRed.black,
-	skipped: Chalk.bgYellow.black,
+	denied: Chalk.bgYellow.black,
+	skipped: Chalk.bgRed.black,
 	downloaded: Chalk.bgBlue.green,
 	queued:  Chalk.bgBlue.yellow,
 	bytes: Chalk.bgCyan.black,

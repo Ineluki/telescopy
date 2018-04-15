@@ -1,18 +1,18 @@
 # TelesCOPY Docs
 
-Module for mirroring websites. Since using wget is awful to use from other programs. This addresses the following issues:
+Module for mirroring websites. Created because using wget is awful to use from other programs and doesn't have precise enough URL filtering. This addresses the following issues:
 
 * designed to integrate well into other node apps
-* can also run well from the CLI
-* perfect filtering options
+* can also run from the CLI
+* perfect URL filtering options
 * able to cancel and still use what has been downloaded so far (local file names are deterministic)
-* allows for re-download of single resources
+* allows for re-download of single resources and update of whole mirrors
 
 Some other features:
 
 * fast (all streaming), but only one thread
-* low memory overhead
-* keeps stats of allowed and denied URIs and how often they appeared
+* low memory overhead (50-90 MB even for huge sites)
+* keeps stats of allowed and denied URLs and how often they appeared
 * keeps track of downloaded bits and bps
 * socks5 proxy support
 * cli tool for testing filters
@@ -23,6 +23,7 @@ It is **not** a JS-aware scraper that uses phantomjs or similar tech.
 
  * [Configuration](config.md)
  * [Filters](filters.md)
+ * [Html Attribute Parsing](html.md)
  * [Integration - API and Events](integration.md)
  * [Debugging](debugging.md)
  * [Development, known Limitations](todo.md)

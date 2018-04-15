@@ -7,7 +7,7 @@ Filter-chains are used in the following places:
 
 Filter chains always take a parsed URL as argument.
 
-They can access the following keys, as defined by node: 'host','path','query','port','protocol','auth','hostname','pathname','hash' (see https://nodejs.org/dist/latest/docs/api/url.html)
+Tests can access the following URL keys, as defined by node: 'host','path','query','port','protocol','auth','hostname','pathname','hash' (see https://nodejs.org/dist/latest/docs/api/url.html) Be careful when using protocol, as the local storage path (and project known url index) does not take protocol into account.
 
 ## Options
 
