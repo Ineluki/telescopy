@@ -1,11 +1,15 @@
 {
   "name": "telescopy",
   "version": "1.0.0",
-  "description": "a website mirror",
+  "description": "a deterministic website mirror, good for both integration and cli usage",
   "main": "index.js",
   "scripts": {
     "test": "echo \"run manually in Tests/\" && exit 1",
-    "run": "node bin/run.js"
+    "project": "node bin/run.js"
+  },
+  "bin": {
+    "telescopy": "bin/run.js",
+    "telescopy-test-rules": "bin/test-rules.js"
   },
   "engines": {
     "node": ">=8.0.0"
@@ -38,6 +42,7 @@
     "htmlparser2": "^3.9.2",
     "mime": "^2.3.1",
     "mkdirp": "^0.5.1",
+    "object-concat": "^0.2.9",
     "pad": "^2.0.3",
     "rimraf": "^2.6.2",
     "socks5-http-client": "^1.0.3",

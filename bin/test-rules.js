@@ -1,3 +1,5 @@
+#!/usr/bin/env node
+
 "use strict";
 const Telescopy = require("../index.js");
 const util = require("../Source/cli/util.js");
@@ -9,7 +11,7 @@ const pad = require('pad');
  */
 
 if (process.argv.length < 3) {
-	console.log("usage: node bin/run.js <optionsFile> <url>");
+	console.log("usage: telescopy-test-rules <optionsFile> <url>");
 	process.exit(3);
 }
 const fileName = process.argv[ 2 ];

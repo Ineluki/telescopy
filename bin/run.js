@@ -1,3 +1,5 @@
+#!/usr/bin/env node
+
 "use strict";
 const Telescopy = require("../index.js");
 const util = require("../Source/cli/util.js");
@@ -9,7 +11,10 @@ const byteman = require("byteman");
 /*
  * takes a json file as last argument and runs it as project settings
  */
-
+ if (process.argv.length < 3) {
+ 	console.log("usage: telescopy <optionsFile>");
+ 	process.exit(3);
+ }
 let fileName = process.argv[ process.argv.length - 1 ];
 const options = util.loadOptions(fileName);
 

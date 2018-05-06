@@ -30,14 +30,14 @@ It is **not** a JS-aware scraper that uses phantomjs or similar tech.
 
 ## Quickstart
 
-### Config
+### Configuration
 
 First setup a config file for your website project. It can be in .json or CommonJS require-able .js
 
 ```json
 {
 	"remote": "https://choosealicense.com/",
-	"local" : "./Data/choosealicense.com"
+	"local" : "./Data/test-project"
 }
 ```
 
@@ -46,7 +46,7 @@ When specifying functions, the CommonJS version is required:
 ```js
 module.exports = {
 	remote: "https://choosealicense.com/",
-	local : "./Data/choosealicense.com",
+	local : "./Data/test-project",
 	filterByUrl: (parsedUrl) => {
 		//your filter logic
 		return allowed;
@@ -54,15 +54,25 @@ module.exports = {
 }
 ```
 
+Once started, you can expect the html entry point in *./Data/test-project/choosealicense.com/index.html*
+
 ### CLI
 
-Depending on where you saved your config, run the project like this:
+It's easiest to install globally and specify your saved config file like this:
 
 ```sh
-node bin/run.sh Data/config.js
+npm i -g telescopy
+telescopy config.js
 ```
 
-It will keep you up-to-date while it runs and exit the process once no more resources need to be downloaded.
+To test your filters on one URL you can first try:
+
+```sh
+#uses entry url
+telescopy-test-rules config.js
+#uses specified url
+telescopy-test-rules config.js http://example.com/some-specific-url
+```
 
 ### Integration
 
@@ -78,8 +88,8 @@ project.on("error",err => {
 	//something unexpected happend
 });
 project.on("end",finished => {
-	if (finished) //project complete
-	//otherwise just paused
+	if (finished) //project is complete
+	//otherwise stop() was called but the queue is not empty
 });
 project.start();
 ```
