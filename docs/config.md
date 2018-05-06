@@ -142,3 +142,15 @@ Using this option enables making fine-grained decisions based on url and all hea
 *object, optional*
 
 Can enhance or override behavior on how html tags/attributes are handled. See [HTML Parsing](html.md) for full details.
+
+### fetchHeaders
+
+*object, optional*
+
+Can define additional headers sent with each request. These will be passed directly to [fetch](https://www.npmjs.com/package/fetch#headers). Format should be: { "key": "value" }. Telescopy only sets the referer header automatically. To set cookies, see below.
+
+### fetchCookies
+
+*array, optional*
+
+Can define cookies to be sent with every request, useful for simulating logins. These will be passed directly to [fetch](https://www.npmjs.com/package/fetch#cookies). Format should be: ["name=value", "key=value; path=/; secure"]

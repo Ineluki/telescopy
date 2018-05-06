@@ -25,6 +25,7 @@ const ProjectUtil = require("./Util");
 const Socks5HttpAgent = require('socks5-http-client/lib/Agent');
 const Socks5HttpsAgent = require('socks5-https-client/lib/Agent');
 const HtmlAttributeFilters = require('./HtmlAttributeFilters');
+const ObjectConcat = require('object-concat');
 
 module.exports = Project;
 
@@ -62,6 +63,9 @@ function Project(options) {
 	this.userAgent = options.userAgent || 'Telescopy website mirror';
 	//socks proxy url:port
 	this.proxy = options.proxy || null;
+	//headers and cookies
+	this.fetchHeaders = options.fetchHeaders || {};
+	this.fetchCookies = options.fetchCookies || [];
 
 	//stream transformers per mime
 	this.transformers = options.transformers ? options.transformers : {
@@ -165,7 +169,8 @@ Project.prototype.fetch = function( url, referer ) {
 		agentHttp : this.httpAgent,
 		agentHttps : this.httpsAgent,
 		encoding : '',
-		headers : {}
+		headers : ObjectConcat({},this.fetchHeaders),
+		cookies: this.fetchCookies
 	};
 	if (referer) {
 		options.headers.referer = referer;
