@@ -104,7 +104,7 @@ Fallback mime type, if no other could be determined via mimeRules or mime defini
 
 *string, optional*
 
-Set a proxy-URL. Currently only socks5 is supported. Can be a local tor node, e.g. "socks5://localhost:9050" to access onion urls
+Set a proxy-URL. Supports http(s) and socks via [proxy-agent](https://www.npmjs.com/package/proxy-agent). Can be a local tor node, e.g. "socks5://localhost:9050" to access onion urls.
 
 ### baseWaitTime
 

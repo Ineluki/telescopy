@@ -44,9 +44,8 @@
     "mkdirp": "^0.5.1",
     "object-concat": "^0.2.9",
     "pad": "^2.1.0",
-    "rimraf": "^2.6.2",
-    "socks5-http-client": "^1.0.4",
-    "socks5-https-client": "^1.2.1"
+    "proxy-agent": "^3.0.1",
+    "rimraf": "^2.6.2"
   },
   "devDependencies": {
     "static-server": "^2.2.1"

@@ -4,6 +4,7 @@ List of possible future features
 
 ## High Prio
 
+ * blacklist - making it easier to delete tags with certain html attribute criteria
 
 ## Low Prio
 

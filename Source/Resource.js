@@ -368,7 +368,7 @@ Resource.prototype.calculateLocalPathFromUrl = function ( url, mime ) {
 	let parsedUrl = URL.parse( url, true, false );
 	var queryString = '';
 	if (parsedUrl.search) {	//add query as base64
-		queryString = new Buffer(parsedUrl.search).toString("base64");
+		queryString = Buffer.from(parsedUrl.search).toString("base64");
 		if (queryString.length > 32) {	//workaround against too long file names
 			queryString = Crypto.createHash('sha512').update(queryString).digest("base64");
 		}

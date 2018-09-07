@@ -22,10 +22,9 @@ const mkdirp = require("mkdirp");
 const Events = require("events");
 const util = require("util");
 const ProjectUtil = require("./Util");
-const Socks5HttpAgent = require('socks5-http-client/lib/Agent');
-const Socks5HttpsAgent = require('socks5-https-client/lib/Agent');
 const HtmlAttributeFilters = require('./HtmlAttributeFilters');
 const ObjectConcat = require('object-concat');
+const ProxyAgent = require('proxy-agent');
 
 module.exports = Project;
 
@@ -106,12 +105,8 @@ function Project(options) {
 		maxFreeSockets : 256
 	};
 	if (this.proxy) {
-		let proxyParsed = URL.parse( this.proxy );
-		this.agentOptions.keepAlive = false;	//workaround for some bug
-		this.agentOptions.socksHost = proxyParsed.hostname;
-		this.agentOptions.socksPort = 1*proxyParsed.port;
-		this.httpAgent = new Socks5HttpAgent(this.agentOptions);
-		this.httpsAgent = new Socks5HttpsAgent(this.agentOptions);
+		this.httpAgent = this.httpsAgent = new ProxyAgent(this.proxy);
+		this.httpAgent.keepAlive = false;
 	} else {
 		this.httpAgent = new HTTP.Agent(this.agentOptions);
 		this.httpsAgent = new HTTPS.Agent(this.agentOptions);
